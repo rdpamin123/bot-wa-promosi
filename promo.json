@@ -1,0 +1,14 @@
+{
+  "paling-murah": {
+    "text": "🔥 PROMO PALING MURAH\n- Indomie 2rb\n- Minyak 10rb",
+    "image": "./paling-murah.jpg"
+  },
+  "tebus-heboh": {
+    "text": "🎉 TEBUS HEMAT\n- Beli sabun tebus 5rb",
+    "image": "./tebus-heboh.jpg"
+  },
+  "beli-banyak": {
+    "text": "📦 GROSIR\n- Beli 10 gratis 1",
+    "image": "./beli-banyak.jpg"
+  }
+}
