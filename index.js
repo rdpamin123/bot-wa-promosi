@@ -7,30 +7,37 @@ async function startBot() {
 
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: true
+        browser: ["Android", "Chrome", "1.0.0"]
     })
 
+    // 🔥 HANDLE QR & KONEKSI
     sock.ev.on("connection.update", (update) => {
         const { connection, qr } = update
 
         if (qr) {
-            console.log("Scan QR berikut:")
+            console.log("\nScan QR ini:\n")
             qrcode.generate(qr, { small: true })
         }
 
         if (connection === "open") {
-            console.log("Bot berhasil terhubung ✅")
+            console.log("✅ Bot berhasil terhubung")
+        }
+
+        if (connection === "close") {
+            console.log("❌ Koneksi terputus, restart ulang")
+            startBot()
         }
     })
 
     sock.ev.on("creds.update", saveCreds)
 
+    // 📩 HANDLE PESAN MASUK
     sock.ev.on("messages.upsert", async ({ messages }) => {
         const msg = messages[0]
         if (!msg.message) return
 
         const from = msg.key.remoteJid
-        const text = msg.message.conversation || ""
+        const text = msg.message.conversation || msg.message.extendedTextMessage?.text || ""
 
         const db = JSON.parse(fs.readFileSync("./promo.json"))
 
@@ -41,7 +48,7 @@ async function startBot() {
             })
         }
 
-        // KATEGORI
+        // KATEGORI PROMO
         if (db[text.toLowerCase()]) {
             const data = db[text.toLowerCase()]
 
